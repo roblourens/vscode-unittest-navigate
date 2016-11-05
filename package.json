@@ -1,13 +1,14 @@
 {
-    "name": "unit-test-navigator",
-    "displayName": "Unit Test Navigator",
-    "description": "",
+    "name": "unittest-navigate",
+    "displayName": "Unit Test Navigate",
+    "description": "Adds `describe`, `it`, `suite`, and `test` calls to the symbols list for navigating javascript and typescript unittest scripts.",
     "version": "0.0.1",
     "publisher": "roblourens",
     "engines": {
         "vscode": "^1.5.0"
     },
     "categories": [
+        "Languages",
         "Other"
     ],
     "activationEvents": [
