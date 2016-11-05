@@ -1,7 +1,7 @@
 {
     "name": "unittest-navigate",
     "displayName": "Unit Test Navigate",
-    "description": "Adds `describe`, `it`, `suite`, and `test` calls to the symbols list for navigating javascript and typescript unittest scripts.",
+    "description": "Adds your unit test definition calls to the symbols list for easier navigation of javascript and typescript unit test scripts.",
     "version": "0.0.1",
     "publisher": "roblourens",
     "engines": {
@@ -27,5 +27,9 @@
         "mocha": "^2.3.3",
         "@types/node": "^6.0.40",
         "@types/mocha": "^2.2.32"
+    },
+    "homepage": "https://github.com/roblourens/vscode-unittest-navigate",
+    "bugs": {
+        "url": "https://github.com/roblourens/vscode-unittest-navigate/issues"
     }
 }
