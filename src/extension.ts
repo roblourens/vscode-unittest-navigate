@@ -28,19 +28,20 @@ export function getSymbolForLine(document: vscode.TextDocument, line: number): v
     }
 }
 
-export function activate(context: vscode.ExtensionContext) {
-    let disposable = vscode.languages.registerDocumentSymbolProvider('typescript', {
-        provideDocumentSymbols(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.SymbolInformation[] {
-            const lineCount = Math.min(document.lineCount, 10000);
-            const result: vscode.SymbolInformation[] = [];
-            for (let line = 0; line < lineCount; line++) {
-                const symbol = getSymbolForLine(document, line);
-                if (symbol) result.push(symbol);
-            }
-
-            return result;
+const symbolProvider = {
+    provideDocumentSymbols(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.SymbolInformation[] {
+        const lineCount = Math.min(document.lineCount, 10000);
+        const result: vscode.SymbolInformation[] = [];
+        for (let line = 0; line < lineCount; line++) {
+            const symbol = getSymbolForLine(document, line);
+            if (symbol) result.push(symbol);
         }
-    });
 
-    context.subscriptions.push(disposable);
+        return result;
+    }
+};
+
+export function activate(context: vscode.ExtensionContext) {
+    context.subscriptions.push(vscode.languages.registerDocumentSymbolProvider('typescript', symbolProvider));
+    context.subscriptions.push(vscode.languages.registerDocumentSymbolProvider('javascript', symbolProvider));
 }
