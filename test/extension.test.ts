@@ -25,11 +25,19 @@ suite('match regex', () => {
     })
 
     test('extra whitespace', () => {
-        testMatches(`     describe   ('test 1',  `, 'test 1')
+        testMatches(`     describe('test 1',  `, 'test 1')
     })
 
     test('matches with .skip, .only', () => {
         testMatches(`describe.skip('test 1')`, 'test 1')
+    })
+
+    test('no match when something else is first on the line', () => {
+        testMatches(`foo describe('test 1')`, null)
+    })
+
+    test('no match when "describe" + something else is first on the line', () => {
+        testMatches(`describeFoo('test 1')`, null)
     })
 
     test('does not match something else', () => {

@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 
 export function getTestFnRegex(...fnNames: string[]): RegExp {
-    // whitespace, fnName, .* for .only, .skip, etc, then ('name')
+    // whitespace, fnName, optional .something for .only, .skip, etc, then ('name')
     const quotePattern = `(?:'|"|\`)`;
-    return new RegExp(`^\\s*(${fnNames.join('|')}).*\\(\s*${quotePattern}(.*)${quotePattern}`);
+    return new RegExp(`^\\s*(${fnNames.join('|')})(?:\\.[a-zA-Z0-9]*)?\\(\\s*${quotePattern}(.*)${quotePattern}`);
 }
 
 export function getSymbolForMatch(testFnMatch: RegExpMatchArray, document: vscode.TextDocument, line: number, kind: vscode.SymbolKind): vscode.SymbolInformation {

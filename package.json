@@ -2,7 +2,7 @@
     "name": "unittest-navigate",
     "displayName": "Unit Test Navigate",
     "description": "Adds your unit test definition calls to the symbols list for easier navigation of javascript and typescript unit test scripts.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "roblourens",
     "engines": {
         "vscode": "^1.5.0"
