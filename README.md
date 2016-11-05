@@ -11,3 +11,7 @@ Before:
 After:
 
 ![after](https://raw.githubusercontent.com/roblourens/vscode-unittest-navigate/master/images/after.gif)
+
+
+## Notes
+It will work when one of these function calls is the first non-whitespace text on the line, and its first parameter is a string.

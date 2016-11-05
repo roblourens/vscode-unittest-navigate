@@ -7,6 +7,7 @@
     "engines": {
         "vscode": "^1.5.0"
     },
+    "icon": "images/mocha.svg",
     "categories": [
         "Languages",
         "Other"
@@ -30,6 +31,9 @@
     },
     "homepage": "https://github.com/roblourens/vscode-unittest-navigate",
     "bugs": {
+        "url": "https://github.com/roblourens/vscode-unittest-navigate/issues"
+    },
+    "repository": {
         "url": "https://github.com/roblourens/vscode-unittest-navigate/issues"
     }
 }
