@@ -6,10 +6,10 @@ export function getTestFnRegex(...fnNames: string[]): RegExp {
     return new RegExp(`^\\s*(${fnNames.join('|')}).*\\(${quotePattern}(.*)${quotePattern}\\s*,`);
 }
 
-export function getSymbolForMatch(testFnMatch: RegExpMatchArray, document: vscode.TextDocument, line: number): vscode.SymbolInformation {
+export function getSymbolForMatch(testFnMatch: RegExpMatchArray, document: vscode.TextDocument, line: number, kind: vscode.SymbolKind): vscode.SymbolInformation {
     const container = testFnMatch[1];
     const name = testFnMatch[2];
-    return new vscode.SymbolInformation(name, vscode.SymbolKind.Module, container,
+    return new vscode.SymbolInformation(name, kind, container,
         new vscode.Location(document.uri, new vscode.Position(line, 0)));
 }
 
@@ -19,12 +19,12 @@ export function getSymbolForLine(document: vscode.TextDocument, line: number): v
     const {text} = document.lineAt(line);
     const suiteMatch = text.match(suitePattern);
     if (suiteMatch) {
-        return getSymbolForMatch(suiteMatch, document, line);
+        return getSymbolForMatch(suiteMatch, document, line, vscode.SymbolKind.Module);
     }
 
     const testCaseMatch = text.match(testCasePattern);
     if (testCaseMatch) {
-        return getSymbolForMatch(testCaseMatch, document, line);
+        return getSymbolForMatch(testCaseMatch, document, line, vscode.SymbolKind.Method);
     }
 }
 
