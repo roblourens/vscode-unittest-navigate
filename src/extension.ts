@@ -1,31 +1,41 @@
 import * as vscode from 'vscode';
 
-export function activate(context: vscode.ExtensionContext) {
-    const suitePattern = /^\s*(describe|suite).*\((?:'|")(.*)(?:'|")\s*,/;
-    const testCasePattern = /^\s*(it|test).*\((?:'|")(.*)(?:'|")\s*,/;
+export function getTestFnRegex(...fnNames: string[]): RegExp {
+    // whitespace, fnName, .* for .only, .skip, etc, then ('name')
+    const quotePattern = `(?:'|")`;
+    return new RegExp(`^\\s*(${fnNames.join('|')}).*\\(${quotePattern}(.*)${quotePattern}\\s*,`);
+}
 
+export function getSymbolForMatch(testFnMatch: RegExpMatchArray, document: vscode.TextDocument, line: number): vscode.SymbolInformation {
+    const container = testFnMatch[1];
+    const name = testFnMatch[2];
+    return new vscode.SymbolInformation(name, vscode.SymbolKind.Module, container,
+        new vscode.Location(document.uri, new vscode.Position(line, 0)));
+}
+
+const suitePattern = getTestFnRegex('suite', 'describe');
+const testCasePattern = getTestFnRegex('test', 'it');
+export function getSymbolForLine(document: vscode.TextDocument, line: number): vscode.SymbolInformation {
+    const {text} = document.lineAt(line);
+    const suiteMatch = text.match(suitePattern);
+    if (suiteMatch) {
+        return getSymbolForMatch(suiteMatch, document, line);
+    }
+
+    const testCaseMatch = text.match(testCasePattern);
+    if (testCaseMatch) {
+        return getSymbolForMatch(testCaseMatch, document, line);
+    }
+}
+
+export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.languages.registerDocumentSymbolProvider('typescript', {
         provideDocumentSymbols(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.SymbolInformation[] {
             const lineCount = Math.min(document.lineCount, 10000);
             const result: vscode.SymbolInformation[] = [];
             for (let line = 0; line < lineCount; line++) {
-                const {text} = document.lineAt(line);
-
-                const suiteMatch = text.match(suitePattern);
-                if (suiteMatch) {
-                    const container = suiteMatch[1];
-                    const name = suiteMatch[2];
-                    result.push(new vscode.SymbolInformation(name, vscode.SymbolKind.Module, container,
-                        new vscode.Location(document.uri, new vscode.Position(line, 0))));
-                } else {
-                    const testCaseMatch = text.match(testCasePattern);
-                    if (testCaseMatch) {
-                        const container = testCaseMatch[1];
-                        const name = testCaseMatch[2];
-                        result.push(new vscode.SymbolInformation(name, vscode.SymbolKind.Method, container,
-                            new vscode.Location(document.uri, new vscode.Position(line, 0))));
-                    }
-                }
+                const symbol = getSymbolForLine(document, line);
+                if (symbol) result.push(symbol);
             }
 
             return result;
