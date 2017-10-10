@@ -13,8 +13,10 @@
         "Other"
     ],
     "activationEvents": [
+        "onLanguage:javascript",
+        "onLanguage:javascriptreact",
         "onLanguage:typescript",
-        "onLanguage:javascript"
+        "onLanguage:typescriptreact"
     ],
     "main": "./out/src/extension",
     "scripts": {
